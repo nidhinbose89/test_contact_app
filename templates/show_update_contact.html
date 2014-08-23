@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <form action="{{ url_for('delete_contact', contact_id = contact.id) }}" method=post class=delete-contact>
+        <input type=submit value=Delete>
+    </form>
+    <form action="{{ url_for('edit_contact', contact_id=contact.id) }}" method=post class=add-contact>
+      <dl>
+        <dt>Name:
+        <dd><input type=text size=30 name=name value="{{ contact.name }}">
+        <dt>Number:
+        <dd><input type=text size=30 name=number value="{{ contact.number }}">
+        <dt>About:
+        <dd><textarea name=about rows=5 cols=40>{{ contact.about }}</textarea>
+        <dd><input type=submit value=Save>
+      </dl>
+    </form>
+{% endblock %}
