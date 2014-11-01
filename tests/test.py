@@ -13,7 +13,7 @@ class MyTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(self):
-        print "dropping tables after test suite run completely"
+        print "\ndropping tables after test suite run completely"
         drop_all_tables(self.app.application)
 
     def test_01_empty_data(self):
