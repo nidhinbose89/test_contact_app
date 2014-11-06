@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import unittest
 from contact.models import MyContact
 from contact.app import get_app
