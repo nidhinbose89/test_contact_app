@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from models import MyContact
 
 
@@ -7,15 +7,28 @@ def reg_views(app):
 
     @app.route('/')
     def index():
+        return render_template('index.html')
+
+    @app.route('/get_contacts')
+    def get_contacts():
         contacts = MyContact.query.all()
-        return render_template('index.html', contacts=contacts)
+        contact_list = []
+        for contact in contacts:
+            contact_item = {
+                'id': contact.id,
+                'name': contact.name,
+                'phone': contact.number,
+                'about': contact.about,
+            }
+            contact_list.append(contact_item)
+        return jsonify({'data': contact_list})
 
     @app.route('/add', methods=['POST'])
     def add_contact():
         try:
-            contact = MyContact(name=request.form.get('name'),
-                                number=request.form.get('number'),
-                                about=request.form.get('about')
+            contact = MyContact(name=request.json.get('name'),
+                                number=request.json.get('phone'),
+                                about=request.json.get('about')
                                 )
             db_session.add(contact)
             db_session.commit()
