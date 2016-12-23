@@ -1,12 +1,9 @@
-
-from contact import make_app
-from contact.database import init_db
+from flask import Flask
 
 
-def get_app(environment='dev'):
-    app = make_app(environment)
-    from contact.views import reg_views
-    init_db(app)
-    reg_views(app)
+def make_app():
+
+    app = Flask(__name__)
+    # export CONTACT_APP_SETTINGS=/absolute/path/to/test_contact_app/config.py
+    app.config.from_envvar('CONTACT_APP_SETTINGS')
     return app
-

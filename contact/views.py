@@ -12,14 +12,17 @@ def reg_views(app):
 
     @app.route('/add', methods=['POST'])
     def add_contact():
-        contact = MyContact(name=request.form.get('name'),
-                            number=request.form.get('number'),
-                            about=request.form.get('about')
-                            )
-        db_session.add(contact)
-        db_session.commit()
+        try:
+            contact = MyContact(name=request.form.get('name'),
+                                number=request.form.get('number'),
+                                about=request.form.get('about')
+                                )
+            db_session.add(contact)
+            db_session.commit()
+            flash('New contact saved !!')
+        except Exception as e:
+            flash(e.message)
 
-        flash('New contact saved !!')
         return redirect(url_for('index'))
 
     @app.route('/edit/contact/<int:contact_id>', methods=['GET', 'POST'])
