@@ -4,4 +4,4 @@
 DEBUG = False
 TESTING = False
 SECRET_KEY = 'some-key-for-contact-application'
-SQLALCHEMY_DATABASE_URI = 'mysql://root:123@localhost:3306/contact_app?charset=utf8'
+SQLALCHEMY_DATABASE_URI = 'mysql://<username>:<password>@<domain_localhost>:<port_3306>/<database_name>?charset=utf8'
