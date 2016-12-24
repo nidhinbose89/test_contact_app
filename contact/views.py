@@ -32,32 +32,34 @@ def reg_views(app):
                                 )
             db_session.add(contact)
             db_session.commit()
-            flash('New contact saved !!')
+            # TODO - implement serializer in model
+            return jsonify({'data': {
+                'id': contact.id,
+                'name': contact.name,
+                'phone': contact.number,
+                'about': contact.about
+            }})
         except Exception as e:
-            flash(e.message)
+            raise e
 
-        return redirect(url_for('index'))
-
-    @app.route('/edit/contact/<int:contact_id>', methods=['GET', 'POST'])
-    def edit_contact(contact_id):
+    @app.route('/contact/<int:contact_id>', methods=['GET', 'PUT', 'DELETE'])
+    def contact(contact_id):
         contact = MyContact.query.get(contact_id)
-        if request.method == "GET":
-            # show the contact
-            return render_template('show_update_contact.html', contact=contact)
-        elif request.method == "POST":
+        if request.method == "PUT":
             # its update
-            contact.name = request.form.get('name')
-            contact.number = request.form.get('number')
-            contact.about = request.form.get('about')
+            contact.name = request.json.get('name')
+            contact.number = request.json.get('phone')
+            contact.about = request.json.get('about')
             db_session.commit()
 
-            flash('Contact Updated !!')
-            return render_template('show_update_contact.html', contact=contact)
-
-    @app.route('/delete/contact/<int:contact_id>', methods=['POST'])
-    def delete_contact(contact_id):
-        contact = MyContact.query.get(contact_id)
-        db_session.delete(contact)
-        db_session.commit()
-        flash('Contact Deleted !!')
-        return redirect(url_for('index'))
+            return jsonify({'data': {
+                'id': contact.id,
+                'name': contact.name,
+                'phone': contact.number,
+                'about': contact.about
+            }})
+        elif request.method == "DELETE":
+            db_session.delete(contact)
+            db_session.commit()
+            flash('Contact Deleted !!')
+            return jsonify({'data': {'message': 'Deleted'}})
